@@ -1,0 +1,50 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <mat-list-item>
+        <mat-icon mat-list-icon>dashboard</mat-icon>
+        <a mat-line routerLinkActive="active" routerLink="/dash">Dashboard</a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>drag_indicator</mat-icon>
+        <a mat-line routerLinkActive="active" routerLink="/drag">Drag &amp; Drop</a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>dynamic_form</mat-icon>
+        <a mat-line routerLinkActive="active" routerLink="/form">Forms</a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>table_view</mat-icon>
+        <a mat-line routerLinkActive="active" routerLink="/tab">Tables</a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>account_tree</mat-icon>
+        <a mat-line routerLinkActive="active" routerLink="/tree">Tress</a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>language</mat-icon>
+        <a mat-line routerLinkActive="active" routerLink="/pais">Pais</a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>language</mat-icon>
+        <a mat-line routerLinkActive="active" routerLink="/dpto">Departamento</a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>language</mat-icon>
+        <a mat-line routerLinkActive="active" routerLink="/ciudad">Ciudad</a>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>{{ title }}</span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
