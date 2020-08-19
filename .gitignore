@@ -154,6 +154,7 @@ target/
 /nbproject/private/
 /nbbuild/
 /dist/
+!**/src/main/resources/static/
 /nbdist/
 /.nb-gradle/
 build/

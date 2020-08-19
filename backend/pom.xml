@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.root4j</groupId>
-    <artifactId>SB-Person</artifactId>
+    <artifactId>SB-Ng-Person</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>SB-Person</name>
-    <description>Demo project for Spring Boot</description>
+    <name>SB-Ng-Person</name>
+    <description>Demo project for Spring Boot + Angular + H2</description>
 
     <properties>
         <java.version>11</java.version>

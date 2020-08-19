@@ -11,22 +11,20 @@ import { CiudadService } from './ciudad.service';
   styleUrls: ['./ciudad.component.css']
 })
 export class CiudadComponent implements OnInit {
-  displayedColumns = ['codigo', 'nombre'];
+  displayedColumns = ['codigo', 'nombre', 'dpto', 'pais'];
   dataSource: MatTableDataSource<Ciudad>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private ciudadService: CiudadService) {
-    this.getAll();
   }
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.getAll();
   }
 
-  applyFilter(event: Event) {
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -39,6 +37,8 @@ export class CiudadComponent implements OnInit {
     this.ciudadService.getAll()
       .subscribe((res: any) => {
         this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       }, err => {
         console.error(err);
       });
