@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
 import { Ciudad } from '../interfaces/ciudad';
+import { Response } from '../interfaces/response';
+import { ResponseService } from './response.service';
 
 const apiUrl = 'http://localhost:8080/api/ciudad';
 
@@ -15,45 +18,57 @@ const httpOptions = {
 })
 export class CiudadService {
 
-  constructor(private http: HttpClient) { }
+  /**
+   * Constructor del servicio
+   * @param http Inyeccion de la clase HttpClient
+   * @param rspSrv Inyeccion del servicio ResponseService
+   */
+  constructor(private http: HttpClient, private rspSrv: ResponseService)  { }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
-  getAll(): Observable<Ciudad[]> {
+  /**
+   * Metodo para obtener todos los datos de la entidad Ciudad
+   */
+  getAll(): Observable<Response> {
     return this.http.get<Ciudad[]>(`${apiUrl}`)
       .pipe(
-        tap(objs => console.log('fetched objs')),
-        catchError(this.handleError('getAll', []))
+        tap(objs => this.rspSrv.doResponse('fetched', false, objs)),
+        catchError(err => this.rspSrv.doResponse('err', true, err))
       );
   }
 
-  add(obj: Ciudad): Observable<Ciudad> {
+  /**
+   * Metodo para persistir la entidad Ciudad
+   * @param obj Objeto Ciudad
+   */
+  add(obj: Ciudad): Observable<Response> {
     return this.http.post<Ciudad>(apiUrl, obj, httpOptions).pipe(
-      tap((o: Ciudad) => console.log(`added obj w/ id=${o.codigo}`)),
-      catchError(this.handleError<Ciudad>('add'))
+      tap((o: Ciudad) => this.rspSrv.doResponse('add', false, o)),
+      catchError(err => this.rspSrv.doResponse('err', true, err))
     );
   }
 
-  update(id: string, obj: Ciudad): Observable<any> {
+  /**
+   * Metodo para actualizar la entidad Ciudad
+   * @param id Llave de la entidad
+   * @param obj Objeto Ciudad
+   */
+  update(id: string, obj: Ciudad): Observable<Response> {
     const url = `${apiUrl}/${id}`;
     return this.http.put(url, obj, httpOptions).pipe(
-      tap(_ => console.log(`updated obj id=${id}`)),
-      catchError(this.handleError<any>('update'))
+      tap(obj => this.rspSrv.doResponse('updated', false, obj)),
+      catchError(err => this.rspSrv.doResponse('err', true, err))
     );
   }
 
-  delete(id: string): Observable<Ciudad> {
+  /**
+   * Metodo para eliminar la entidad Ciudad
+   * @param id Llave de la entidad
+   */
+  delete(id: string): Observable<Response> {
     const url = `${apiUrl}/${id}`;
     return this.http.delete<Ciudad>(url, httpOptions).pipe(
-      tap(_ => console.log(`deleted obj id=${id}`)),
-      catchError(this.handleError<Ciudad>('delete'))
+      tap(obj => this.rspSrv.doResponse('delete', false, obj)),
+      catchError(err => this.rspSrv.doResponse('err', true, err))
     );
   }
 }

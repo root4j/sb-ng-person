@@ -2,24 +2,25 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Dpto } from '../interfaces/dpto';
-import { DptoService } from '../services/dpto.service';
+import { Ciudad } from '../../interfaces/ciudad';
+import { CiudadService } from '../../services/ciudad.service';
 
 @Component({
-  selector: 'app-dpto',
-  templateUrl: './dpto.component.html',
-  styleUrls: ['./dpto.component.css']
+  selector: 'app-ciudad',
+  templateUrl: './ciudad.component.html',
+  styleUrls: ['./ciudad.component.css']
 })
-export class DptoComponent implements OnInit {
-  displayedColumns = ['codigo', 'nombre'];
-  dataSource: MatTableDataSource<Dpto>;
+export class CiudadComponent implements OnInit {
+  displayedColumns = ['codigo', 'nombre', 'dpto', 'pais'];
+  dataSource: MatTableDataSource<Ciudad>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private dptoService: DptoService) { }
+  constructor(private ciudadService: CiudadService) {
+  }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getAll();
   }
 
@@ -33,7 +34,7 @@ export class DptoComponent implements OnInit {
   }
 
   getAll(): void {
-    this.dptoService.getAll()
+    this.ciudadService.getAll()
       .subscribe((res: any) => {
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.paginator = this.paginator;

@@ -43,12 +43,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 
-import { PaisComponent } from './pais/pais.component';
-import { DptoComponent } from './dpto/dpto.component';
-import { CiudadComponent } from './ciudad/ciudad.component';
-import { PaisDialogComponent } from './pais-dialog/pais-dialog.component';
-import { DptoDialogComponent } from './dpto-dialog/dpto-dialog.component';
-import { CiudadDialogComponent } from './ciudad-dialog/ciudad-dialog.component';
+import { PaisComponent } from './geographic/pais/pais.component';
+import { DptoComponent } from './geographic/dpto/dpto.component';
+import { CiudadComponent } from './geographic/ciudad/ciudad.component';
+import { PaisDialogComponent } from './geographic/pais-dialog/pais-dialog.component';
+import { DptoDialogComponent } from './geographic/dpto-dialog/dpto-dialog.component';
+import { CiudadDialogComponent } from './geographic/ciudad-dialog/ciudad-dialog.component';
+import { ConfirmDialogComponent } from './util/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { CiudadDialogComponent } from './ciudad-dialog/ciudad-dialog.component';
     PaisDialogComponent,
     DptoDialogComponent,
     CiudadDialogComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

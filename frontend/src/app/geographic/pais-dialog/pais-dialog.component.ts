@@ -1,9 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Pais } from '../interfaces/pais'
-import { PaisService } from '../services/pais.service'
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import { Pais } from '../../interfaces/pais'
+import { PaisService } from '../../services/pais.service'
+import { SnackBarService } from '../../services/snack-bar.service';
 
 
 @Component({
@@ -12,6 +13,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./pais-dialog.component.css']
 })
 export class PaisDialogComponent {
+  /**
+   * Instancia del formario
+   */
   mainForm = this.fb.group({
     codigo: [null, Validators.compose([
       Validators.required, Validators.minLength(2), Validators.maxLength(2)])
@@ -21,14 +25,22 @@ export class PaisDialogComponent {
     ]
   });
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
-
+  /**
+   * Variable que permite determinar si el formario es para editar o crear
+   */
   create: boolean = false;
 
+  /**
+   * Constructor del componente
+   * @param fb Inyeccion de la clase FormBuilder
+   * @param _snk Inyeccion del servicio SnackBarService
+   * @param mainService Inyeccion del servicio PaisService
+   * @param dialogRef Inyeccion de la clase MatDialogRef
+   * @param data Data que se recibe como parametro
+   */
   constructor(
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar,
+    private _snk: SnackBarService,
     private mainService: PaisService,
     public dialogRef: MatDialogRef<PaisDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -45,7 +57,10 @@ export class PaisDialogComponent {
     }
   }
 
-  onSubmit() {
+  /**
+   * Metodo encargado de persistir la informacion
+   */
+  onSubmit(): void {
     const obj: Pais = {
       codigo: this.mainForm.value.codigo,
       nombre: this.mainForm.value.nombre
@@ -57,59 +72,52 @@ export class PaisDialogComponent {
     }
   }
 
-
-  showSnack(message: string): void {
-    this._snackBar.open(message, 'Aceptar', {
-      duration: 3000,
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
-    });
-  }
-
+  /**
+   * Metood encargado de cerrar la ventana dialog
+   */
   close(): void {
     this.dialogRef.close();
   }
 
+  /**
+   * Metodo encargado de persistir nueva informacion
+   * @param obj Objeto a persistir
+   */
   post(obj: Pais): void {
     this.mainService.add(obj)
       .subscribe((res: any) => {
-        console.log('Post');
-        console.log(res);
-        if (res !== undefined && res !== null && res.hasOwnProperty('status') && res.status !== 200) {
-          if (res.status === 409) {
-            this.showSnack(res.error);
-          } else {
-            this.showSnack('Se presento un error grave, favor verificar la consola');
-          }
+        if (res !== undefined && res !== null && res.hasOwnProperty('ownHandle')) {
+          this._snk.show(res.message);
+          console.error(res.object);
         } else {
           this.mainForm.reset();
-          this.showSnack('Pais creado exitosamente!');
+          this._snk.show('Pais creado exitosamente!');
           this.dialogRef.close();
         }
       }, err => {
-        this.showSnack('Se presento un error grave, favor verificar la consola');
+        this._snk.show('Se presento un error grave, favor verificar la consola');
         console.error(err);
       });
   }
 
+  /**
+   * Metodo encargado de actualizar informacion
+   * @param id Llave del registro
+   * @param obj Objeto a actualizar
+   */
   put(id: string, obj: Pais): void {
     this.mainService.update(id, obj)
       .subscribe((res: any) => {
-        console.log('Put');
-        console.log(res);
-        if (res !== undefined && res !== null && res.hasOwnProperty('status') && res.status !== 200) {
-          if (res.status === 409) {
-            this.showSnack(res.error);
-          } else {
-            this.showSnack('Se presento un error grave, favor verificar la consola');
-          }
+        if (res !== undefined && res !== null && res.hasOwnProperty('ownHandle')) {
+          this._snk.show(res.message);
+          console.error(res.object);
         } else {
           this.mainForm.reset();
-          this.showSnack('Pais actualizado exitosamente!');
+          this._snk.show('Pais actualizado exitosamente!');
           this.dialogRef.close();
         }
       }, err => {
-        this.showSnack('Se presento un error grave, favor verificar la consola');
+        this._snk.show('Se presento un error grave, favor verificar la consola');
         console.error(err);
       });
   }

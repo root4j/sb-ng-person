@@ -8,9 +8,9 @@ describe('PaisDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaisDialogComponent ]
+      declarations: [PaisDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
