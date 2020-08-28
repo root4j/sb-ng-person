@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Dpto } from '../interfaces/dpto';
-import { DptoService } from './dpto.service';
+import { DptoService } from '../services/dpto.service';
 
 @Component({
   selector: 'app-dpto',

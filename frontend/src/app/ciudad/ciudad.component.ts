@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Ciudad } from '../interfaces/ciudad';
-import { CiudadService } from './ciudad.service';
+import { CiudadService } from '../services/ciudad.service';
 
 @Component({
   selector: 'app-ciudad',

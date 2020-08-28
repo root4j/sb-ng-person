@@ -1,4 +1,4 @@
-import { Dpto } from './dpto';
+import { Dpto } from './dpto'
 
 export interface Ciudad {
     codigo: string;
