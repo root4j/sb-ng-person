@@ -42,12 +42,12 @@ public class DptoController {
 
     @GetMapping()
     public Iterable<Departamento> list() {
-        return repository.findAll();
+        return repository.findAllByOrderByCodigo();
     }
 
     @GetMapping("/{id}")
     public Iterable<Departamento> get(@PathVariable String id) {
-        return repository.findByPais_Codigo(id);
+        return repository.findByPais_CodigoOrderByCodigo(id);
     }
 
     @PutMapping("/{id}")

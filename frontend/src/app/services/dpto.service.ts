@@ -23,13 +23,24 @@ export class DptoService {
    * @param http Inyeccion de la clase HttpClient
    * @param rspSrv Inyeccion del servicio ResponseService
    */
-  constructor(private http: HttpClient, private rspSrv: ResponseService)  { }
+  constructor(private http: HttpClient, private rspSrv: ResponseService) { }
 
   /**
    * Metodo para obtener todos los datos de la entidad Dpto
    */
   getAll(): Observable<Response> {
     return this.http.get<Dpto[]>(`${apiUrl}`)
+      .pipe(
+        tap(objs => this.rspSrv.doResponse('fetched', false, objs)),
+        catchError(err => this.rspSrv.doResponse('err', true, err))
+      );
+  }
+
+  /**
+   * Metodo para obtener todos los datos de la entidad Dpto por Pais
+   */
+  getByPais(id: string): Observable<Response> {
+    return this.http.get<Dpto[]>(`${apiUrl}/${id}`)
       .pipe(
         tap(objs => this.rspSrv.doResponse('fetched', false, objs)),
         catchError(err => this.rspSrv.doResponse('err', true, err))

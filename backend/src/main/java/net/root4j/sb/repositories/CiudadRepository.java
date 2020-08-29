@@ -16,5 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CiudadRepository extends CrudRepository<Ciudad, String> {
 
-    Iterable<Ciudad> findByDpto_Codigo(String codigo);
+    Iterable<Ciudad> findAllByOrderByCodigo();
+
+    Iterable<Ciudad> findByDpto_CodigoOrderByCodigo(String codigo);
 }

@@ -42,12 +42,12 @@ public class CiudadController {
 
     @GetMapping()
     public Iterable<Ciudad> list() {
-        return repository.findAll();
+        return repository.findAllByOrderByCodigo();
     }
 
     @GetMapping("/{id}")
     public Iterable<Ciudad> get(@PathVariable String id) {
-        return repository.findByDpto_Codigo(id);
+        return repository.findByDpto_CodigoOrderByCodigo(id);
     }
 
     @PutMapping("/{id}")

@@ -14,29 +14,51 @@ import { SnackBarService } from '../../services/snack-bar.service';
 import { PaisDialogComponent } from '../pais-dialog/pais-dialog.component';
 import { ConfirmDialogComponent } from '../../util/confirm-dialog/confirm-dialog.component';
 
+const dialogSize: string = '650px';
+
 @Component({
   selector: 'app-pais',
   templateUrl: './pais.component.html',
   styleUrls: ['./pais.component.css']
 })
 export class PaisComponent implements OnInit {
+  /**
+   * Array para definicion de columnas visibles del DataTable
+   */
   displayedColumns = ['codigo', 'nombre', 'accion'];
+  /**
+   * Objeto para manejo del DataSource del DataTable
+   */
   dataSource: MatTableDataSource<Pais>;
-
+  /**
+   * Objeto para manejo de Paginacion del DataTable
+   */
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  /**
+   * Objeto para manejo de Ordenamiento del DataTable
+   */
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  /**
+   * Constructor del componente
+   * @param mainService Inyeccion del servicio PaisService
+   * @param dialog Inyeccion de la clase MatDialog
+   * @param _snk Inyeccion del servicio SnackBarService
+   */
   constructor(
     private mainService: PaisService,
     public dialog: MatDialog,
     private _snk: SnackBarService) { }
 
+  /**
+   * Metodo de inicio despues de la construccion del componente
+   */
   ngOnInit(): void {
     this.getAll();
   }
 
   /**
-   * Metodo para aplicar filtros sobre la datatable
+   * Metodo para aplicar filtros sobre el DataTable
    * @param event Valor del filtro
    */
   applyFilter(event: Event): void {
@@ -53,7 +75,7 @@ export class PaisComponent implements OnInit {
    */
   openNewDialog(): void {
     const dialogRef = this.dialog.open(PaisDialogComponent, {
-      width: '650px',
+      width: dialogSize,
       data: { create: true }
     });
 
@@ -68,7 +90,7 @@ export class PaisComponent implements OnInit {
    */
   openEditDialog(obj: Pais): void {
     const dialogRef = this.dialog.open(PaisDialogComponent, {
-      width: '650px',
+      width: dialogSize,
       data: { create: false, data: obj }
     });
 
@@ -82,10 +104,10 @@ export class PaisComponent implements OnInit {
    * @param obj Objeto que se va a eliminar
    */
   openDeleteDialog(obj: Pais): void {
-    const dialogData = new ConfirmDialogModel('Eliminar Pais', 'Seguro que desea eliminar el pais ' + obj.nombre + '?');
+    const dialogData = new ConfirmDialogModel('Eliminar Pais', 'Seguro que desea eliminar el Pais ' + obj.nombre + '?');
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '650px',
+      width: dialogSize,
       data: dialogData
     });
 
@@ -102,8 +124,6 @@ export class PaisComponent implements OnInit {
   delete(id: string): void {
     this.mainService.delete(id)
       .subscribe((res: any) => {
-        console.log('Delete');
-        console.log(res);
         if (res !== undefined && res !== null && res.hasOwnProperty('ownHandle')) {
           this._snk.show(res.message);
           console.error(res.object);

@@ -42,7 +42,7 @@ public class PaisController {
 
     @GetMapping()
     public Iterable<Pais> list() {
-        return repository.findAll();
+        return repository.findAllByOrderByCodigo();
     }
 
     @PutMapping("/{id}")
